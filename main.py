@@ -118,6 +118,7 @@ def user_input():
         with print_lock:
             choice = input("Choose an option (1-4): ").strip()
         if choice == '1':
+            clearscreen()
             addnote()
         elif choice == '2':
             clearscreen()
