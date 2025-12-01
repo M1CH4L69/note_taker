@@ -144,19 +144,11 @@ Choose an option (1-4):
 | `PermissionError` | Zavřete soubor, ověřte práva |
 | Zamíchané výstupy | Aplikace má mutex; restartujte |
 
+9. Testování
+   Test chybějícího souboru
+   Test čtení jedné poznámky
+
 ---
-
-## 9. Testování
-
-Všech 8 testů prošlo OK:
-- ✓ Add Note
-- ✓ View Notes
-- ✓ Delete Note
-- ✓ Analýza async
-- ✓ Zálohování
-- ✓ Graceful Exit
-- ✓ Prázdné poznámky
-- ✓ Thread Safety
 
 **Závěr:** Aplikace **splňuje všechny požadavky** a je **připravena.**
 
