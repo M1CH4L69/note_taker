@@ -8,9 +8,9 @@
 |------|-------|
 | **Název projektu** | Smart Note Taker (Threaded) |
 | **Autor** | Michal Němec, c4b |
-| **Datum vypracování** | Listopad 2025 |
+| **Datum vypracování** | Listopad 2025, rozšířeno Leden 2026 |
 | **Typ projektu** | Školní projekt |
-| **Účel** | Demonstrace práce s vlákny (threading) a synchronizací v Pythonu |
+| **Účel** | Demonstrace práce s vlákny (threading) a synchronizací v Pythonu + GUI kalendář |
 
 ---
 
@@ -25,6 +25,7 @@
 - **FR5:** Analýza běží 2 sec (simulace náročné operace) v background
 - **FR6:** Zálohování každých 10 sec bez blokování
 - **FR7:** Graceful shutdown — korektní zastavení vláken
+- **FR8:** Grafický kalendář (tkinter) — zobrazení poznámek v měsíčním přehledu, přidání/mazání poznámek
 
 ---
 
@@ -84,6 +85,9 @@ Data:
 | `threading` | Thread, Lock, Event — konkurence |
 | `queue` | Queue — thread-safe fronta |
 | `shutil` | copy() — kopírování souborů |
+| `tkinter` | GUI kalendář — měsíční přehled, formuláře |
+| `calendar` | Výpočet dnů v měsíci, jmen měsíců |
+| `datetime` | Parsování a porovnávání datumů |
 
 ---
 
@@ -112,14 +116,15 @@ Data:
 ### 7.2 Postup
 
 ```powershell
-cd d:\PythonAcademi\webinar15_16_todoList\TO_DO_project1
+cd d:\note_taker-main
 python --version          # Ověření Python 3.11+
 python -m venv .venv      # Virtuální prostředí (doporučeno)
 .\.venv\Scripts\Activate.ps1
-python main.py            # Spuštění
+python main.py            # Konzolová aplikace
+python calendar_gui.py    # GUI kalendář
 ```
 
-### 7.3 Ověření
+### 7.3 Konzolová aplikace (main.py)
 
 Po spuštění vidíte menu:
 ```
@@ -132,6 +137,19 @@ System started. Background threads running...
 4. Exit
 Choose an option (1-4): 
 ```
+
+- `1` Add Note — přidání nové poznámky a odeslání do pozadní analýzy
+- `2` View Notes — zobrazení uložených poznámek
+- `3` Delete Note — smazání vybrané poznámky
+- `4` Exit — ukončení aplikace a korektní zastavení vláken
+
+### 7.4 Grafický kalendář (calendar_gui.py)
+
+- Spusť `python calendar_gui.py` — zobrazí se měsíční kalendář čtoucí `notes.txt`.
+- **Formulář nahoře**: vyplň Note, volitelně zaškrtni Important, tlačítko „Add Note" uloží do `notes.txt` (analýza a záloha běží na pozadí).
+- **Kalendářový přehled**: každý den ukazuje až 3 poznámky s timestampem. Klikni na číslo dne pro zobrazení detailu.
+- **Pravý panel**: seznam poznámek vybraného dne s časem a „!" pro důležité. Vyber poznámku a klikni „Delete selected note" pro smazání.
+- **Navigace**: šipky `<` / `>` pro přepínání měsíců, tlačítko „Reload" pro opětovné načtení `notes.txt`.
 
 ---
 
@@ -165,6 +183,10 @@ Použití
   - `2` View Notes — zobrazení uložených poznámek
   - `3` Delete Note — smazání vybrané poznámky
   - `4` Exit — ukončení aplikace a korektní zastavení vláken
+  ### 7.4 Grafický kalendář
+  - Spusť `python calendar_gui.py` — zobrazí se měsíční kalendář čtoucí `notes.txt`.
+  - Formulář nahoře přidá poznámku (volba Important); uloží se do `notes.txt`, spustí se analýza a záloha běží na pozadí.
+  - Klikni na den pro zobrazení poznámek daného dne; vyber v seznamu a tlačítkem „Delete selected note“ ji smažeš (mazání opět upraví `notes.txt`).
 
 Poznámky k implementaci
 - Aplikace používá dvě pozadní vlákna: jeden worker pro analýzu poznámek (zapisuje do `analysis_log.txt`) a druhý pro pravidelné zálohování `notes.txt` do `notes.bak`.

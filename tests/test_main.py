@@ -1,4 +1,3 @@
-# python -m unittest tests/test_main.py
 import os
 import sys
 import unittest

@@ -1,5 +1,6 @@
 import os
-from typing import List
+from datetime import datetime
+from typing import List, Dict, Optional
 
 
 class NoteStorage:
@@ -52,3 +53,41 @@ class NoteStorage:
     
     def get_note_count(self) -> int:
         return len(self.read_notes_as_blocks())
+
+    def get_notes_structured(self) -> List[Dict[str, object]]:
+        """
+        Return notes with parsed metadata for UI use.
+        Each item: {index, datetime (or None), content, important}
+        """
+        blocks = self.read_notes_as_blocks()
+        parsed: List[Dict[str, object]] = []
+
+        for idx, block in enumerate(blocks):
+            lines = [ln.strip() for ln in block.splitlines() if ln.strip()]
+            date_str: Optional[str] = None
+            content = ""
+            important = False
+
+            for line in lines:
+                if line.startswith("# Date:"):
+                    date_str = line[len("# Date:"):].strip()
+                elif line.startswith("# Note:"):
+                    content = line[len("# Note:"):].strip()
+                elif line.startswith("# Important:"):
+                    important = line[len("# Important:"):].strip().lower() == "true"
+
+            dt_val = None
+            if date_str:
+                try:
+                    dt_val = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+                except ValueError:
+                    dt_val = None
+
+            parsed.append({
+                "index": idx,
+                "datetime": dt_val,
+                "content": content,
+                "important": important,
+            })
+
+        return parsed
